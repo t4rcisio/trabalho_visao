@@ -213,6 +213,7 @@ class RastreamentoApp(ctk.CTk):
                     
                     center_x = x + w // 2
                     center_y = y + h // 2
+                    self.trajectory.appendleft((center_x, center_y))
                     
                     # Desenhar Mira (Crosshair)
                     mira_size = 20
@@ -223,8 +224,17 @@ class RastreamentoApp(ctk.CTk):
                     
                     self.status_label.configure(text=f"Rastreando ({self.tracker_type})", text_color="#2b8a3e")
                 else:
+                    self.trajectory.clear()
                     cv2.putText(frame, "PERDIDO", (10, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
                     self.status_label.configure(text="Objeto Perdido!", text_color="#c92a2a")
+
+            # Desenha a trajetória na tela
+            for i in range(1, len(self.trajectory)):
+                if self.trajectory[i - 1] is None or self.trajectory[i] is None:
+                    continue
+                # A espessura da linha diminui ao longo do tempo para dar efeito de "rastro"
+                thickness = int(np.sqrt(64 / float(i + 1)) * 2.5)
+                cv2.line(frame, self.trajectory[i - 1], self.trajectory[i], (0, 0, 255), thickness)
 
             # Calcula e exibe FPS
             fps = int(1 / (time.time() - start_time + 0.0001))
