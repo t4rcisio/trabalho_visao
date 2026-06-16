@@ -60,7 +60,8 @@ class RastreamentoApp(ctk.CTk):
         self.btn_start.pack(fill="x", padx=20, pady=5)
 
         ctk.CTkLabel(self.control_frame, text="Algoritmo de Rastreio:").pack(anchor="w", padx=20, pady=(20, 0))
-        self.tracker_menu = ctk.CTkOptionMenu(self.control_frame, values=["CSRT", "KCF"], command=self.change_tracker)
+        self.tracker_menu = ctk.CTkComboBox(self.control_frame, values=["CSRT", "KCF"], command=self.change_tracker, state="readonly")
+        self.tracker_menu.set("CSRT")
         self.tracker_menu.pack(fill="x", padx=20, pady=(5, 15))
 
         self.btn_select = ctk.CTkButton(self.control_frame, text="Selecionar Objeto", fg_color="#2b8a3e", hover_color="#237032", command=self.start_selection, state="disabled")
